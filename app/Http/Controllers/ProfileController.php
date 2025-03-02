@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Artisan;
+use App\Models\Category;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,15 +19,16 @@ class ProfileController extends Controller
     {
 
         $user = Auth::user();
-        return view('profile.show', compact('user'));
+        return view('profile.show', compact('user',));
     }
     /**
      * Display the user's profile form.
      */
     public function edit()
 {
+    $categories=Category::all();
     $user = Auth::user();
-    return view('profile.edit', compact('user'));
+    return view('profile.edit', compact(['user','categories']));
 }
 
     /**
@@ -34,10 +37,12 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
 
+
+
+
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
         }
 
         $imagePath = null;

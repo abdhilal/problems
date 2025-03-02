@@ -28,7 +28,7 @@
 
                         <!-- الموقع -->
                         <p class="card-text">
-                            <i class="fas fa-map-marker-alt"></i> <strong>الموقع:</strong> {{ $artisan->location }}
+                            <i class="fas fa-map-marker-alt"></i> <strong>الموقع:</strong> {{ $artisan->user->address }}
                         </p>
 
                         <!-- رقم الهاتف -->
@@ -53,7 +53,7 @@
 
                         <!-- زر تواصل معه -->
                         <a href="{{ route('messages.index', $artisan->user->id) }}" class="btn btn-primary ml-2">
-                            <i class="fas fa-comment-alt"></i> تواصل 
+                            <i class="fas fa-comment-alt"></i> تواصل
                         </a>
                     </div>
                 </div>

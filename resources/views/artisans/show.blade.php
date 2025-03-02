@@ -21,12 +21,24 @@
                     <p class="card-text">
                         <i class="fas fa-briefcase"></i> <strong>المهنة:</strong> {{ $artisan->profession }}
                     </p>
+
                     <p class="card-text">
-                        <i class="fas fa-map-marker-alt"></i> <strong>الموقع:</strong> {{ $artisan->location }}
+                        <i class="fas fa-map-marker-alt"></i> <strong>الموقع:</strong> {{ $artisan->user->address }}
                     </p>
                     <p class="card-text">
                         <i class="fas fa-phone-alt"></i> <strong>رقم الهاتف:</strong> {{ $artisan->user->phone ?? 'غير متوفر' }}
                     </p>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">الخبرات</h5>
+
+                                @foreach ($artisan->categories as $category)
+                                    <span>-{{ $category->name }}</span>
+                                @endforeach
+
+
+                        </div>
+                    </div>
                     <p class="card-text">
                         <i class="fas fa-star"></i> <strong>التقييم:</strong>
                         @if($artisan->reviews->count() > 0)
@@ -47,6 +59,11 @@
 
                     @if($artisan->reviews->isEmpty())
                         <div class="alert alert-info">لا توجد تقييمات حتى الآن.</div>
+                        <div class="mb-3">
+                            <a href="{{ route('reviews.create', $artisan->id) }}" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> إضافة تقييم
+                            </a>
+                        </div>
                     @else
                         <div class="mb-3">
                             <a href="{{ route('reviews.create', $artisan->id) }}" class="btn btn-primary">

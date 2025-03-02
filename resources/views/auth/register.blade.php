@@ -34,6 +34,11 @@
                 <label for="name" class="form-label"><i class="fas fa-user"></i> الاسم</label>
                 <input id="name" class="form-control" type="text" name="name" value="{{ old('name') }}" required autofocus>
             </div>
+            <!-- الموقع -->
+            <div class="form-group">
+                <label for="address" class="form-label"><i class="fas fa-map-marker-alt"></i> الموقع</label>
+                <input id="address" class="form-control" type="text" name="address" value="{{ old('address') }}">
+            </div>
   <!-- رقم الهاتف -->
   <div class="form-group">
     <label for="phone" class="form-label"><i class="fas fa-phone"></i> رقم الهاتف</label>
@@ -73,11 +78,7 @@
                     <input id="experience_years" class="form-control" type="number" name="experience_years" value="{{ old('experience_years') }}">
                 </div>
 
-                <!-- الموقع -->
-                <div class="form-group">
-                    <label for="location" class="form-label"><i class="fas fa-map-marker-alt"></i> الموقع</label>
-                    <input id="location" class="form-control" type="text" name="location" value="{{ old('location') }}">
-                </div>
+
             </div>
 
             <!-- زر التسجيل -->

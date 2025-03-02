@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Artisan;
 use App\Models\Offer;
 use App\Models\Problem;
-use App\Services\NotificationService;
+use App\Models\User;
+use App\Notifications\NewOfferNotification;
+use App\Notifications\NewProblemNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class OfferController extends Controller
 {
@@ -36,7 +40,9 @@ class OfferController extends Controller
         $problem = $offer->problem;
 
         $message = "تم استلام عرض جديد لمشكلتك : {$problem->title}";
-        NotificationService::sendNotification($problem->user_id, $message);
+        $user=User::find($problem->user_id);
+        $user->notify(new NewOfferNotification($problem,$message ));
+
 
 
         return redirect()->route('problems.show', $problem)->with('success', 'تم تقديم العرض بنجاح!');
@@ -59,8 +65,10 @@ class OfferController extends Controller
         $problem->save();
 
          // إرسال إشعار للحرفي
-    $message = "تم قبول عرضك لمشكلة : {$offer->problem->title}";
-    NotificationService::sendNotification($offer->artisan->user_id, $message);
+    $message = "تم قبول عرضك للمشكلة : {$offer->problem->title}";
+
+    $user=Artisan::find($offer->artisan->id);
+    $user->notify(new NewOfferNotification($problem,$message));
 
         return redirect()->route('problems.show', $problem)->with('success', 'تم قبول العرض بنجاح!');
     }
@@ -80,8 +88,8 @@ class OfferController extends Controller
 
              // إرسال إشعار للحرفي
     $message = "تم رفض عرضك لمشكلة : {$offer->problem->title}";
-    NotificationService::sendNotification($offer->artisan->user_id, $message);
-
+    $user=Artisan::find($offer->artisan->id);
+    $user->notify(new NewOfferNotification($problem,$message));
 
             return redirect()->route('problems.show', $problem)->with('success', 'تم رفض العرض بنجاح!');
         }

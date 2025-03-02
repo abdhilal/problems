@@ -1,15 +1,18 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ArtisanController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ArtisanNotificationController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Models\Problem;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\PostController as ControllersPostController;
+use App\Http\Controllers\UserNotificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,8 +25,10 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile/store', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile/edit/', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/store/', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile/artisan/edit/', [ArtisanController::class, 'edit'])->name('profile-artisan.edit');
+    Route::put('/profile/artisan/store/', [ArtisanController::class, 'update'])->name('profile-artisan.update');
 });
 
 // problems user
@@ -50,10 +55,12 @@ Route::post('/artisans/{artisan}/reviews', [ReviewController::class, 'store'])->
 Route::get('/myproblems',[ProblemController::class,'myproblems'])->name('my.problems');
 
 //الاشعارات
-Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+Route::get('/notifications/artisans', [ArtisanNotificationController::class, 'index'])->name('artisans.notifications.index');
+Route::get('/notifications/user', [UserNotificationController::class, 'index'])->name('user.notifications.index');
 
 //تحديد الاشعار كمقروء
-Route::post('/notifications/{notification}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+Route::post('/notifications/artisans{id}/markasread', [ArtisanNotificationController::class, 'markAsRead'])->name('artisans.notifications.markAsRead');
+Route::post('/notifications/user    {id}/markasread', [UserNotificationController::class, 'markAsRead'])->name('user.notifications.markAsRead');
 //الصفحة الرئيسية
 Route::get('home',[HomeController::class,'index'])->name('home.index');
 //عرض الحرفيين
@@ -68,6 +75,33 @@ Route::post('/messages/{receiverId}', [MessageController::class, 'store'])->name
 Route::post('/messages/{message}/mark-as-read', [MessageController::class, 'markAsRead'])->name('messages.markAsRead');
 //قائمة المحادثة
 Route::get('/messages', [MessageController::class, 'conversations'])->name('messages.conversations');
+
+//تحديث تصنيفات الحرفي
+Route::put('/artisan/category/{id}',[ArtisanController::class,'update'])->name('artisans.update');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 require __DIR__.'/auth.php';

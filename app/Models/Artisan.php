@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Artisan extends Model
 {
+    use Notifiable;
+
     protected $fillable = [
-        'user_id', 'profession', 'experience_years', 'location'
+        'user_id', 'profession', 'experience_years', 'location','categories'
     ];
 
     /**
@@ -32,5 +35,11 @@ class Artisan extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    // علاقة Many-to-Many مع التصنيفات
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'artisan_category');
     }
 }

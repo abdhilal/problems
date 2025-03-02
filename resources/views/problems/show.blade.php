@@ -1,3 +1,7 @@
+@include('layouts.app')
+
+   @include('layouts.sidebar')
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>

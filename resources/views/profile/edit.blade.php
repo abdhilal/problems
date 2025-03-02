@@ -9,6 +9,8 @@
         <div class="col-md-8">
             <h2 class="mb-4">تعديل البروفايل</h2>
 
+
+
             @if(session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
@@ -34,32 +36,15 @@
                     <label for="phone" class="form-label">رقم الهاتف</label>
                     <input type="text" class="form-control" id="phone" name="phone" value="{{ $user->phone }}">
                 </div>
+             @if (!Auth::user()->artisan)
 
                 <!-- العنوان -->
                 <div class="mb-3">
                     <label for="address" class="form-label">العنوان</label>
                     <input type="text" class="form-control" id="address" name="address" value="{{ $user->address }}">
                 </div>
-
-                <!-- السيرة الذاتية -->
-                <div class="mb-3">
-                    <label for="bio" class="form-label">السيرة الذاتية</label>
-                    <textarea class="form-control" id="bio" name="bio" rows="4">{{ $user->bio }}</textarea>
-                </div>
-
-@if($user->artisan)
-
-                <div class="mb-3">
-                    <label for="bio" class="form-label">المهنة</label>
-                    <textarea class="form-control" id="bio" name="profession" rows="4">{{ $user->artisan->profession }}</textarea>
-                </div>
-
-                <div class="mb-3">
-                    <label for="bio" class="form-label">عدد سنوات الخبرة</label>
-                    <textarea class="form-control" id="bio" name="experience_years" rows="4">{{ $user->artisan->experience_years }}</textarea>
-                </div>
-
                 @endif
+
 
 
                 <!-- الصورة الشخصية -->
@@ -77,6 +62,11 @@
         </div>
     </div>
 </div>
+
+
+
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -3,7 +3,7 @@
         <h2>لوحة التحكم</h2>
         <ul>
             <li><a href="{{route('home.index')}}" onclick="showContent('home')"><i class="fas fa-home"></i> الصفحة الرئيسية</a></li>
-            <li><a href="{{route('notifications.index')}}" onclick="showContent('notifications')"><i class="fas fa-bell"></i> الإشعارات</a></li>
+            <li><a href="{{route(Auth::user()->artisan?'artisans.notifications.index':'user.notifications.index')}}" onclick="showContent('notifications')"><i class="fas fa-bell"></i> الإشعارات</a></li>
             <li><a href="{{route('messages.conversations')}}" onclick="showContent('messages')"><i class="fas fa-envelope"></i> الرسائل</a></li>
             <li><a href="{{route('my.problems')}}" onclick="showContent('my-issues')"><i class="fas fa-tasks"></i> مشكلاتي</a></li>
             <li><a href="{{route('profile.show')}}" onclick="showContent('profile')"><i class="fas fa-user"></i> البروفايل</a></li>

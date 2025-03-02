@@ -38,7 +38,6 @@ class RegisteredUserController extends Controller
              'role' => ['required'],
              'profession' => 'required_if:role,artisan|string|max:255|nullable',
              'experience_years' => 'required_if:role,artisan|integer|min:0|nullable',
-             'location' => 'required_if:role,artisan|string|max:255|nullable',
              'addeess' => '|string|max:255|nullable',
         ]);
 
@@ -48,7 +47,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'role'=>$request->role,
             'phone'=>$request->phone,
-            'address'=>$request->location
+            'address'=>$request->address
 
         ]);
 
@@ -57,7 +56,7 @@ class RegisteredUserController extends Controller
                 'user_id' => $user->id,
                 'profession' => $request->profession,
                 'experience_years' => $request->experience_years,
-                'location' => $request->location,
+                'location' => 'hhhh',
             ]);
         }
 

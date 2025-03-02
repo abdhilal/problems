@@ -56,10 +56,10 @@ class User extends Authenticatable
     /**
      * علاقة المستخدم مع الإشعارات
      */
-    public function notifications()
-    {
-        return $this->hasMany(Notification::class);
-    }
+    // public function notifications()
+    // {
+    //     return $this->hasMany(Notification::class);
+    // }
 
     /**
      * The attributes that should be hidden for serialization.

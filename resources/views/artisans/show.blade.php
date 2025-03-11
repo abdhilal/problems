@@ -11,10 +11,12 @@
         <!-- صورة الحرفي -->
         <div class="col-md-4 mb-4">
             <div class="card shadow-sm">
-                @if($artisan->user->profile_image)
-                    <img src="{{ asset('storage/' . $artisan->user->profile_image) }}" class="card-img-top" alt="صورة الحرفي" style="height: 300px; object-fit: cover;">
+                @if ($artisan->user->profile_image)
+                    <img src="{{ asset('storage/' . $artisan->user->profile_image) }}" class="card-img-top"
+                        alt="صورة الحرفي" style="height: 300px; object-fit: cover;">
                 @else
-                    <img src="{{ asset('storage/problems/problem.webp') }}" class="card-img-top" alt="صورة افتراضية" style="height: 300px; object-fit: cover;">
+                    <img src="{{ asset('storage/problems/problem.webp') }}" class="card-img-top" alt="صورة افتراضية"
+                        style="height: 300px; object-fit: cover;">
                 @endif
                 <div class="card-body">
                     <h5 class="card-title">{{ $artisan->user->name }}</h5>
@@ -26,23 +28,33 @@
                         <i class="fas fa-map-marker-alt"></i> <strong>الموقع:</strong> {{ $artisan->user->address }}
                     </p>
                     <p class="card-text">
-                        <i class="fas fa-phone-alt"></i> <strong>رقم الهاتف:</strong> {{ $artisan->user->phone ?? 'غير متوفر' }}
+                        <i class="fas fa-phone-alt"></i> <strong>رقم الهاتف:</strong>
+                        {{ $artisan->user->phone ?? 'غير متوفر' }}
                     </p>
+                        <p>
+
+                            <a href="{{ route('messages.index', $artisan->user->id) }}" class="btn btn-primary ml-2">
+                                <i class="fas fa-comment-alt"></i> تواصل
+                            </a>
+                        </p>
+
+
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-title">الخبرات</h5>
 
-                                @foreach ($artisan->categories as $category)
-                                    <span>-{{ $category->name }}</span>
-                                @endforeach
+                            @foreach ($artisan->categories as $category)
+                                <span>-{{ $category->name }}</span>
+                            @endforeach
 
 
                         </div>
                     </div>
                     <p class="card-text">
                         <i class="fas fa-star"></i> <strong>التقييم:</strong>
-                        @if($artisan->reviews->count() > 0)
-                            {{ number_format($artisan->reviews->avg('rating'), 1) }} ⭐ ({{ $artisan->reviews->count() }} تقييم)
+                        @if ($artisan->reviews->count() > 0)
+                            {{ number_format($artisan->reviews->avg('rating'), 1) }} ⭐
+                            ({{ $artisan->reviews->count() }} تقييم)
                         @else
                             لا توجد تقييمات
                         @endif
@@ -57,20 +69,31 @@
                 <div class="card-body">
                     <h3 class="card-title mb-4">التقييمات</h3>
 
-                    @if($artisan->reviews->isEmpty())
+                    @if ($artisan->reviews->isEmpty())
                         <div class="alert alert-info">لا توجد تقييمات حتى الآن.</div>
-                        <div class="mb-3">
-                            <a href="{{ route('reviews.create', $artisan->id) }}" class="btn btn-primary">
-                                <i class="fas fa-plus"></i> إضافة تقييم
-                            </a>
-                        </div>
+                        <!-- زر إضافة تقييم مع التحقق -->
+                        @auth
+                            @php
+                                $hasReviewed = $artisan->reviews->where('user_id', auth()->id())->isNotEmpty();
+                            @endphp
+                            @if (!$hasReviewed)
+                                <div class="mb-3">
+                                    <a href="{{ route('reviews.create', $artisan->id) }}" class="btn btn-primary">
+                                        <i class="fas fa-plus"></i> إضافة تقييم
+                                    </a>
+                                </div>
+                            @else
+                                <div class="alert alert-warning mb-3">
+                                    لقد قمت بتقييم هذا الحرفي مسبقًا.
+                                </div>
+                            @endif
+                        @else
+                            <div class="alert alert-info mb-3">
+                                يرجى تسجيل الدخول لإضافة تقييم.
+                            </div>
+                        @endauth
                     @else
-                        <div class="mb-3">
-                            <a href="{{ route('reviews.create', $artisan->id) }}" class="btn btn-primary">
-                                <i class="fas fa-plus"></i> إضافة تقييم
-                            </a>
-                        </div>
-                        @foreach($artisan->reviews as $review)
+                        @foreach ($artisan->reviews as $review)
                             <div class="mb-4 p-3 border rounded">
                                 <h5 class="mb-2">التقييم: {{ $review->rating }}/5 <i class="fas fa-star"></i></h5>
                                 <p class="mb-2">{{ $review->comment }}</p>
@@ -97,4 +120,5 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 </body>
+
 </html>

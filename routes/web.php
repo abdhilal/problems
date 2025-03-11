@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Models\Problem;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController as ControllersPostController;
 use App\Http\Controllers\UserNotificationController;
 use Illuminate\Support\Facades\Route;
@@ -55,12 +56,10 @@ Route::post('/artisans/{artisan}/reviews', [ReviewController::class, 'store'])->
 Route::get('/myproblems',[ProblemController::class,'myproblems'])->name('my.problems');
 
 //الاشعارات
-Route::get('/notifications/artisans', [ArtisanNotificationController::class, 'index'])->name('artisans.notifications.index');
-Route::get('/notifications/user', [UserNotificationController::class, 'index'])->name('user.notifications.index');
+Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
 
 //تحديد الاشعار كمقروء
-Route::post('/notifications/artisans{id}/markasread', [ArtisanNotificationController::class, 'markAsRead'])->name('artisans.notifications.markAsRead');
-Route::post('/notifications/user    {id}/markasread', [UserNotificationController::class, 'markAsRead'])->name('user.notifications.markAsRead');
+Route::post('/notifications/{id}/markasread', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
 //الصفحة الرئيسية
 Route::get('home',[HomeController::class,'index'])->name('home.index');
 //عرض الحرفيين
@@ -80,6 +79,11 @@ Route::get('/messages', [MessageController::class, 'conversations'])->name('mess
 Route::put('/artisan/category/{id}',[ArtisanController::class,'update'])->name('artisans.update');
 
 
+Route::get('/test', function () {
+    return view('notifications.user.test');
+})->name('notifications.test');
+
+// Route::get('/send', [OfferController::class, 'sendNotification'])->name('notifications.send');
 
 
 

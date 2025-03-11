@@ -15,8 +15,9 @@
                 @method('PUT')
             <!-- التصنيفات -->
             <div class="mb-3">
-                <label class="form-label">خبراتك</label>
-                <div class="row">
+                <label class="form-label fw-bold text-dark bg-warning p-2 rounded shadow-sm d-inline-block">
+                    حدد خبراتك لكي تصلك إشعارات في المشاكل التي قد تهمك
+                </label>                <div class="row">
                     @foreach($categories as $category)
                         <div class="col-md-4">
                             <div class="form-check">

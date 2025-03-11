@@ -7,7 +7,6 @@ use Illuminate\Notifications\Notifiable;
 
 class Artisan extends Model
 {
-    use Notifiable;
 
     protected $fillable = [
         'user_id', 'profession', 'experience_years', 'location','categories'

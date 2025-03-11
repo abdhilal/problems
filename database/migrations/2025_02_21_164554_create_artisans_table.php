@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('profession');
             $table->integer('experience_years');
-            $table->string('location');
             $table->timestamps();
         });
     }

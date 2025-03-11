@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewMessageSent;
 use Illuminate\Http\Request;
 use App\Models\Message;
 use App\Models\User;
@@ -67,4 +68,11 @@ class MessageController extends Controller
 
     return view('messages.conversations', compact('conversations'));
 }
+
+
+
+
+
+
+
 }

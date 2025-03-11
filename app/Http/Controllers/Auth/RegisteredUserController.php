@@ -56,7 +56,6 @@ class RegisteredUserController extends Controller
                 'user_id' => $user->id,
                 'profession' => $request->profession,
                 'experience_years' => $request->experience_years,
-                'location' => 'hhhh',
             ]);
         }
 

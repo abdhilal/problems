@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\BroadCast;
 use App\Models\Artisan;
 use App\Models\Category;
+use App\Models\Notification;
 use App\Models\Problem;
 use App\Models\User;
-use App\Notifications\NewProblemNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Notification;
 
 class ProblemController extends Controller
 {
@@ -71,13 +71,50 @@ class ProblemController extends Controller
         ]);
 
 
-        // استرجاع الحرفيين الذين لديهم فئة مشابهة لعنوان المشكلة
-        $artisans = Artisan::whereHas('categories', function ($query) use ($request) {
-            $query->where('name', 'like', '%' . $request->title . '%');
-        })->get();
+        // تقسيم العنوان إلى كلمات
+        $keywords = explode(' ', $request->title);
 
-        // إرسال الإشعار لجميع الحرفيين
-        Notification::send($artisans, new NewProblemNotification($problem));
+        // البحث عن الفئات التي تتطابق مع أي كلمة من العنوان
+        $matchedCategoryIds = Category::where(function ($query) use ($keywords) {
+            foreach ($keywords as $keyword) {
+                $query->orWhere('name', 'like', '%' . $keyword . '%');
+            }
+        })->pluck('id');
+
+        // إذا لم يتم العثور على فئات متطابقة
+        if ($matchedCategoryIds->isEmpty()) {
+            return redirect()->route('my.problems')->with('success', 'تم إنشاء المشكلة بنجاح!');
+        }
+
+        // البحث عن الحرفيين بناءً على معرفات الفئات المتطابقة
+        $artisans = Artisan::whereHas('categories', function ($query) use ($matchedCategoryIds) {
+            $query->whereIn('categories.id', $matchedCategoryIds);
+        })->distinct()->get();
+
+        // إعداد الرسالة
+        $message = "هناك مشكلة قد تهمك: {$problem->title}";
+
+        // إذا وُجد حرفيون
+        if ($artisans->isNotEmpty()) {
+            $notifications = $artisans->map(function ($artisan) use ($problem, $message) {
+                return [
+                    'problem_id' => $problem->id,
+                    'user_id' => $artisan->user_id,
+                    'message' => $message,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            })->toArray();
+
+            Notification::insert($notifications);
+
+            foreach ($artisans as $artisan) {
+                event(new BroadCast($artisan->user_id, $message));
+            }
+        }
+
+
+
         return redirect()->route('my.problems')->with('success', 'تم إنشاء المشكلة بنجاح!');
     }
     /**

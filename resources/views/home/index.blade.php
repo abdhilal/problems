@@ -7,7 +7,7 @@
     <div class="container mt-5">
         <div class="text-center">
             <!-- رسالة ترحيبية -->
-            <h1>مرحبًا يا, {{ Auth::user()->name }}</h1>
+            <h1>مرحبًا يا, {{Auth::user()->name}}</h1>
             <p class="lead">اختر أحد الخيارات التالية للبدء:</p>
         </div>
 

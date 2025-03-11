@@ -69,9 +69,10 @@ class ArtisanController extends Controller
 
     public function update(Request $request)
     {
+
         // التحقق من صحة البيانات
         $request->validate([
-            'categories' => 'required|array',
+            'categories' => 'array',
             'categories.*' => 'exists:categories,id',
         ]);
 
@@ -90,9 +91,11 @@ class ArtisanController extends Controller
             'phone' => $request->phone,
             'bio' => $request->bio,
             'address' => $request->address,
-
-
         ]);
+
+
+
+
         $artisan = Auth::user()->artisan;
 
         $artisan->update([

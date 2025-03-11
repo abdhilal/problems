@@ -32,7 +32,6 @@ class NewOfferNotification extends Notification
     {
         return [
             'message' => $this->message,
-
             'problem_id' => $this->problem->id
         ];
     }

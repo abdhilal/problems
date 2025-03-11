@@ -73,6 +73,9 @@
                         <p class="card-text">
                             <strong>الموقع:</strong> {{ $problem->location }}
                         </p>
+                        <a href="{{ route('messages.index', $problem->user->id) }}" class="btn btn-primary ml-2">
+                            <i class="fas fa-comment-alt"></i> تواصل مع صاحب المشكلة
+                        </a>
                     </div>
                 </div>
                 <a href="{{ route('problems.index') }}" class="btn btn-secondary">العودة إلى القائمة</a>
@@ -121,9 +124,12 @@
                                         <span class="badge bg-danger">مرفوض</span>
                                     @endif
                                 </p>
+                                <a href="{{ route('artisans.show', $offer->artisan->id) }}" class="btn bg-success text-white">
+
                                 <p class="card-text">
                                     <strong>مقدم من:</strong> {{ $offer->artisan->user->name }}
                                 </p>
+                                </a>
 
                                 <!-- قبول أو رفض العرض (لصاحب المشكلة فقط) -->
                                 @if(auth()->check() && auth()->id() == $problem->user_id && $offer->status == 'pending')
